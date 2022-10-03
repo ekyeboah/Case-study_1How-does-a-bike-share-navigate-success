@@ -57,7 +57,7 @@
 
 > all_trips_2 %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n() ,average_duration = mean(ride_length)) %>%  arrange(member_casual, weekday) 
 `summarise()` has grouped output by 'member_casual'. You can override using the `.groups` argument.
-# A tibble: 14 � 4
+# A tibble: 14 × 4
 # Groups:   member_casual [2]
    member_casual weekday number_of_rides average_duration
    <chr>         <ord>             <int>            <dbl>
@@ -75,4 +75,53 @@
 12 member        Thu              525483             742.
 13 member        Fri              472179             756.
 14 member        Sat              454015             858.
-> 
+
+
+#create a data frame to identify the start & end stations  mostly patronised by cassual riders
+> casual_start <- all_trips_2 %>% filter(member_casual=="casual")%>% group_by(start_station_name,member_casual)%>% count(start_station_name)
+
+
+
+> arrange(casual_start,desc(n))
+# A tibble: 1,393 × 3
+# Groups:   start_station_name, member_casual [1,393]
+   start_station_name                 member_casual      n
+   <chr>                              <chr>          <int>
+ 1 <NA>                               casual        375534
+ 2 Streeter Dr & Grand Ave            casual         60942
+ 3 DuSable Lake Shore Dr & Monroe St  casual         32717
+ 4 Millennium Park                    casual         28030
+ 5 Michigan Ave & Oak St              casual         26677
+ 6 DuSable Lake Shore Dr & North Blvd casual         25539
+ 7 Shedd Aquarium                     casual         20865
+ 8 Theater on the Lake                casual         19522
+ 9 Wells St & Concord Ln              casual         17918
+10 Clark St & Armitage Ave            casual         14952
+# … with 1,383 more rows
+#
+
+
+> casual_end <- all_trips_2 %>% filter(member_casual=="casual")%>% group_by(end_station_name,member_casual)%>% count(end_station_name)
+
+
+> arrange(casual_end,desc(n))
+# A tibble: 1,409 × 3
+# Groups:   end_station_name, member_casual [1,409]
+   end_station_name                   member_casual      n
+   <chr>                              <chr>          <int>
+ 1 <NA>                               casual        439253
+ 2 Streeter Dr & Grand Ave            casual         62864
+ 3 DuSable Lake Shore Dr & Monroe St  casual         30355
+ 4 Millennium Park                    casual         29001
+ 5 DuSable Lake Shore Dr & North Blvd casual         28407
+ 6 Michigan Ave & Oak St              casual         28074
+ 7 Theater on the Lake                casual         20532
+ 8 Shedd Aquarium                     casual         19596
+ 9 Wells St & Concord Ln              casual         17158
+10 Clark St & Armitage Ave            casual         14984
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+
+
+
+
+
+#Summary Statistics of ride length (in seconds) for both casual and member riders:
+
+> summary(all_trips_2$ride_length)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0     363     643    1185    1160 2442301 
+      
+#Comparison between members and casual riders on  ride length
+
+
+> aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN = mean)
+  all_trips_2$member_casual all_trips_2$ride_length
+1                    casual               1757.8959
+2                    member                771.3082
+> aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN = median)
+  all_trips_2$member_casual all_trips_2$ride_length
+1                    casual                     835
+2                    member                     538
+> aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN = max)
+  all_trips_2$member_casual all_trips_2$ride_length
+1                    casual                 2442301
+2                    member                   93594
+> aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN = min)
+  all_trips_2$member_casual all_trips_2$ride_length
+1                    casual                       0
+2                    member                       0
+
+
+> all_trips_2$day_of_week <- ordered(all_trips_2$day_of_week, levels=c("Sunday", "Monday", "Tuesday","Wednesday", "Thursday", "Friday", "Saturday")) 
+
+
+#Average duration per rider type sorted by day of the week
+
+> aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual + all_trips_2$day_of_week, FUN = mean)
+   all_trips_2$member_casual all_trips_2$day_of_week all_trips_2$ride_length
+1                     casual                  Sunday               2051.1931
+2                     member                  Sunday                865.4431
+3                     casual                  Monday               1790.5813
+4                     member                  Monday                747.0105
+5                     casual                 Tuesday               1554.9109
+6                     member                 Tuesday                730.6850
+7                     casual               Wednesday               1502.4619
+8                     member               Wednesday                731.7847
+9                     casual                Thursday               1561.5856
+10                    member                Thursday                742.4759
+11                    casual                  Friday               1673.3399
+12                    member                  Friday                755.6748
+13                    casual                Saturday               1922.3883
+14                    member                Saturday                858.1010
+
+
+#Average duration sorted by rider type, then day of the week
+
+> all_trips_2 %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n() ,average_duration = mean(ride_length)) %>%  arrange(member_casual, weekday) 
+`summarise()` has grouped output by 'member_casual'. You can override using the `.groups` argument.
+# A tibble: 14 × 4
+# Groups:   member_casual [2]
+   member_casual weekday number_of_rides average_duration
+   <chr>         <ord>             <int>            <dbl>
+ 1 casual        Sun              437413            2051.
+ 2 casual        Mon              292181            1791.
+ 3 casual        Tue              278007            1555.
+ 4 casual        Wed              293245            1502.
+ 5 casual        Thu              311487            1562.
+ 6 casual        Fri              346025            1673.
+ 7 casual        Sat              510057            1922.
+ 8 member        Sun              404503             865.
+ 9 member        Mon              474817             747.
+10 member        Tue              536485             731.
+11 member        Wed              547011             732.
+12 member        Thu              525483             742.
+13 member        Fri              472179             756.
+14 member        Sat              454015             858.
+> 

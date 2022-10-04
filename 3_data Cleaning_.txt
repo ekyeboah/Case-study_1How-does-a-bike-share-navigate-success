@@ -1,0 +1,67 @@
+> str(all_trips)
+
+> all_trips %>% count(member_casual)
+# A tibble: 2 × 2
+  member_casual       n
+  <chr>           <int>
+1 casual        2468479
+2 member        3414564
+
+
+
+#Add Columns for Date, Month, Year, Day of the Week, Ride Length
+
+# In order to analyze ride usage based on the month, day, and year, we need to add columns for each (Date, Month, Year, Day of the Week, Ride Length)
+
+
+> all_trips$date <- as.Date(all_trips$started_at)
+> all_trips$month <- format(as.Date(all_trips$date), "%m")
+> all_trips$day <- format(as.Date(all_trips$date), "%d")
+> all_trips$year <- format(as.Date(all_trips$date), "%Y")
+> all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+> all_trips$ride_length <- difftime(all_trips$ended_at,all_trips$started_at)
+
+
+#Convert Ride Length from Factor to Numeric
+
+> is.factor(all_trips$ride_length)
+[1] FALSE
+> is.numeric(all_trips$ride_length)
+[1] FALSE
+> all_trips$ride_length <- as.numeric(as.character(all_trips$ride_length))
+> is.numeric(all_trips$ride_length)
+[1] TRUE
+
+
+
+
+# remove bad data
+> any(all_trips$start_station_name == "HQ QR")
+[1] NA
+
+# identify and remove records with ride length that is negative ( bike testing)
+> any(all_trips$ride_length < 0)
+[1] TRUE
+> all_trips_2 <- all_trips[!(all_trips$ride_length<0),]
+> any(all_trips$ride_length < 0)
+[1] FALSE
+
+
+# # Remove start_station_name and end_station_name blank results 
+
+
+> all_trips_cleaned <- all_trips_2 %>%filter( !(is.na(start_station_name) |start_station_name == "")) %>% filter(!(is.na(end_station_name) | end_station_name == "") )
+
+
+
+#The ride_id column is unique to each ride. This column should be reviewed to see if there are any duplicates to delete
+
+
+ride_id_dup <- all_trips_cleaned %>% count(ride_id) %>% filter(n > 1)
+
+
+head(ride_id_dup)
+
+#The above code returned no results
+
+ 

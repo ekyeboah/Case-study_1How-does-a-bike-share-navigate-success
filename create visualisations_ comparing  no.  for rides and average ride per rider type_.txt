@@ -1,5 +1,0 @@
->  all_trips_2 %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n(),average_duration = mean(ride_length)) %>% arrange(member_casual, weekday)  %>% ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +geom_col(position = "dodge")
-`summarise()` has grouped output by 'member_casual'. You can override using the `.groups` argument.
-> all_trips_2 %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n(),average_duration = mean(ride_length)) %>%  arrange(member_casual, weekday)  %>% ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +geom_col(position = "dodge")
-`summarise()` has grouped output by 'member_casual'. You can override using the `.groups` argument.
-> 

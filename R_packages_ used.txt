@@ -1,8 +1,0 @@
-install.Packages("tidyverse")
-install.Packages("lubridate")
-install.Packages("ggplot")
-
-
-library("tidyverse")
-library("lubridate")
-library("ggplot")

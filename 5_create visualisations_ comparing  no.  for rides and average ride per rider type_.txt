@@ -1,0 +1,6 @@
+all_trips_cleaned %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n(),average_duration = mean(ride_length)) %>% arrange(member_casual, weekday)  %>% ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +geom_col(position = "dodge")
+
+
+all_trips_cleaned %>% mutate(weekday = wday(started_at, label = TRUE)) %>% group_by(member_casual, weekday) %>% summarise(number_of_rides = n(),average_duration = mean(ride_length)) %>%  arrange(member_casual, weekday)  %>% ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +geom_col(position = "dodge")
+
+all_trips_cleaned %>% mutate(mth = month(started_at, label = TRUE)) %>% group_by(member_casual, mth ) %>% summarise(number_of_rides = n(),average_duration = mean(ride_length)) %>%  arrange(member_casual, mth )  %>% ggplot(aes(x = mth , y = average_duration, fill = member_casual)) +geom_col(position = "dodge")
